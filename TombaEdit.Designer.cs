@@ -42,7 +42,6 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Name = "TombaEdit";
             this.ResumeLayout(false);
-
         }
 
         #endregion
