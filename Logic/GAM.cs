@@ -71,6 +71,7 @@ namespace TombaEdit.Logic
             }
 
             var outfile = stream.ToArray();
+            stream.Close();
             return outfile;
         }
 
