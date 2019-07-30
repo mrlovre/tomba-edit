@@ -23,6 +23,7 @@ namespace TombaEdit
         public MainWindow()
         {
             InitializeComponent();
+            button.Click += (sender, args) => { MessageBox.Show("TEXT!", "TITLE!"); };
         }
     }
 }
