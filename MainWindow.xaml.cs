@@ -20,9 +20,12 @@ namespace TombaEdit
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static string Version => "TombaEdit - v. 0.1";
+
         public MainWindow()
         {
             InitializeComponent();
+            DataContext = this;
         }
     }
 }
