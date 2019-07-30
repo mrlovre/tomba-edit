@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Microsoft.Win32;
@@ -34,7 +35,19 @@ namespace TombaEdit
 
         private void ButtonPack_OnClick(object sender, RoutedEventArgs e)
         {
-            Gam.Pack(TextInputFile.Text, TextOutputFile.Text);
+            ButtonPack.IsEnabled = false;
+            PackProgressBar.IsEnabled = true;
+            foreach (var i in Gam.Pack(TextInputFile.Text, TextOutputFile.Text))
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    PackProgressBar.Value = i;
+                    PackProgressText.Text = $"{i:F2}%";
+                });
+                Debug.WriteLine(i);
+            }
+            PackProgressBar.IsEnabled = false;
+            RefreshButtonPack();
         }
 
         private void ClearInputFile_OnClick(object sender, RoutedEventArgs e)

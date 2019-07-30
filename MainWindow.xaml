@@ -14,12 +14,17 @@
         </Style>
         <Style TargetType="TextBox">
             <Setter Property="Margin" Value="2" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Padding" Value="2" />
         </Style>
         <Style TargetType="Button">
             <Setter Property="Margin" Value="2" />
             <Setter Property="MinHeight" Value="30" />
             <Setter Property="MinWidth" Value="50" />
-            <Setter Property="Padding" Value="6"/>
+            <Setter Property="Padding" Value="6" />
+        </Style>
+        <Style TargetType="ProgressBar">
+            <Setter Property="Margin" Value="2" />
         </Style>
     </Window.Resources>
 
@@ -44,9 +49,10 @@
                 <Label Content="Input file:" Grid.Row="0" Grid.Column="0" />
                 <Label Content="Output file:" Grid.Row="1" Grid.Column="0" />
 
-                <TextBox Name="TextInputFile" IsEnabled="False" Grid.Row="0" Grid.Column="1" Width="200"
+                <TextBox Name="TextInputFile" IsReadOnly="True" Grid.Row="0" Grid.Column="1" MinWidth="200"
                          TextChanged="TextInputFile_OnTextChanged" />
-                <TextBox Name="TextOutputFile" IsEnabled="False" Grid.Row="1" Grid.Column="1" Width="200" TextChanged="TextOutputFile_OnTextChanged"/>
+                <TextBox Name="TextOutputFile" IsReadOnly="True" Grid.Row="1" Grid.Column="1" MinWidth="200"
+                         TextChanged="TextOutputFile_OnTextChanged" />
 
                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2">
                     <Button Name="ButtonInputFile" Content="Open" Click="ButtonInputFile_OnClick" />
@@ -56,12 +62,20 @@
                 <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="2">
                     <Button Name="ButtonOutputFile" Content="Open" Click="ButtonOutputFile_OnClick" />
                     <Button Name="ClearOutputFile" Content="Clear" IsEnabled="False" Click="ClearOutputFile_OnClick" />
-                    <Button Name="CopyOutputFile" Content="Copy from input" IsEnabled="False" Click="CopyOutputFile_OnClick" />
+                    <Button Name="CopyOutputFile" Content="Copy from input" IsEnabled="False"
+                            Click="CopyOutputFile_OnClick" />
                 </StackPanel>
 
-                <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.Column="1">
-                    <Button Name="ButtonPack" Content="Pack" IsEnabled="False" Click="ButtonPack_OnClick"/>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Row="2" Grid.Column="0">
+                    <Button Name="ButtonPack" Content="Pack" IsEnabled="False" Click="ButtonPack_OnClick" />
                 </StackPanel>
+
+                <ProgressBar Name="PackProgressBar" IsEnabled="False" Grid.Row="2" Grid.Column="1" />
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Grid.Row="2" Grid.Column="2">
+                    <TextBlock Name="PackProgressText" />
+                </StackPanel>
+
             </Grid>
         </TabItem>
 

@@ -13,14 +13,20 @@ namespace TombaEdit.Logic
         private static readonly ASCIIEncoding AsciiEncoding = new ASCIIEncoding();
         private static readonly LittleEndianBitConverter LittleEndianBitConverter = new LittleEndianBitConverter();
 
-        public static byte[] Pack(byte[] infile)
+        private class GamFile
+        {
+            public byte[] Infile;
+            public byte[] Outfile;
+        }
+
+        private static IEnumerable<double> Pack(GamFile file)
         {
             var stream = new MemoryStream();
 
             // Write GAM header and file size.
             var header = AsciiEncoding.GetBytes("GAM\0");
             stream.WriteAll(header);
-            var size = infile.Length;
+            var size = file.Infile.Length;
             stream.WriteAll(LittleEndianBitConverter.GetBytes(size));
 
             // Loop over file and compress it.
@@ -29,6 +35,7 @@ namespace TombaEdit.Logic
             var bitmaskPosition = -1;
             while (read < size)
             {
+                yield return (float) read / size * 100;
                 if (bitmask.Count == 0)
                 {
                     // Create 2-byte placeholder for bitmask, remember its position.
@@ -38,7 +45,7 @@ namespace TombaEdit.Logic
 
 
                 // Find best position in buffer to copy from, if such position exists.
-                var (bestPosition, bestLength) = Find(infile, read);
+                var (bestPosition, bestLength) = Find(file.Infile, read);
 
                 if (bestPosition != null)
                 {
@@ -51,7 +58,7 @@ namespace TombaEdit.Logic
                 else
                 {
                     // Can't copy from buffer, copy one byte from input to output.
-                    stream.WriteAll(infile[read]);
+                    stream.WriteAll(file.Infile[read]);
                     read += 1;
                     bitmask.Add(0);
                 }
@@ -68,9 +75,9 @@ namespace TombaEdit.Logic
                 }
             }
 
-            var outfile = stream.ToArray();
+            file.Outfile = stream.ToArray();
             stream.Close();
-            return outfile;
+            yield return 100.0;
         }
 
         private static (int?, byte) Find(IReadOnlyList<byte> infile, int read)
@@ -109,11 +116,11 @@ namespace TombaEdit.Logic
             return (bestPosition, bestLength);
         }
 
-        public static void Pack(string infilePath, string outfilePath)
+        public static IEnumerable<double> Pack(string infilePath, string outfilePath)
         {
-            var infile = File.ReadAllBytes(infilePath);
-            var outfile = Pack(infile);
-            File.WriteAllBytes(outfilePath, outfile);
+            var file = new GamFile {Infile = File.ReadAllBytes(infilePath)};
+            foreach (var i in Pack(file)) yield return i;
+            File.WriteAllBytes(outfilePath, file.Outfile);
         }
     }
 }
