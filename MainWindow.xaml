@@ -5,9 +5,64 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TombaEdit"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Name="button" Content="My Button" Height="50" Width="100" />
-        <TextBlock Text="My text" Margin="347,261,346.6,133" TextAlignment="Center" HorizontalAlignment="Center" Width="100"/>
-    </Grid>
+        Title="{Binding Source={x:Static local:MainWindow.Version}}" Height="450" Width="800">
+
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="HorizontalContentAlignment" Value="Right" />
+        </Style>
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="2" />
+        </Style>
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="2" />
+            <Setter Property="MinHeight" Value="30" />
+            <Setter Property="MinWidth" Value="50" />
+        </Style>
+    </Window.Resources>
+
+    <TabControl>
+        <TabItem>
+            <TabItem.Header>
+                <TextBlock>GAM Pack</TextBlock>
+            </TabItem.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                    <ColumnDefinition Width="auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Content="Input file:" Grid.Row="0" Grid.Column="0" />
+                <Label Content="Output file:" Grid.Row="1" Grid.Column="0" />
+
+                <TextBox Name="textInputFile" IsEnabled="False" Grid.Row="0" Grid.Column="1" Width="100" />
+                <TextBox Name="textOutputFile" IsEnabled="False" Grid.Row="1" Grid.Column="1" Width="100" />
+
+                <Button Name="buttonInputFile" Content="Open" Grid.Row="0" Grid.Column="2" />
+                <Button Name="buttonOutputFile" Content="Open" Grid.Row="1" Grid.Column="2" />
+
+                <Button Name="buttonConvert" Content="Pack" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" />
+            </Grid>
+        </TabItem>
+
+        <TabItem>
+            <TabItem.Header>
+                <TextBox>GAM Unpack</TextBox>
+            </TabItem.Header>
+        </TabItem>
+
+        <TabItem>
+            <TabItem.Header>
+                <TextBox>VRAM viewer</TextBox>
+            </TabItem.Header>
+        </TabItem>
+    </TabControl>
 </Window>
